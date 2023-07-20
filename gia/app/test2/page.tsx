@@ -3,29 +3,30 @@ import { title } from 'process';
 import React from 'react'
 
 
-export default function Test2() {
-  const alphabet = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
-  
+export default function Test2() {  
   //min= 0 for A max= 25 for Z
   const generateRandomNumber = (min:number , max:number) => {
-    const numbers = []
-    for(let i=0;i<6;i++){
-      const num = Math.floor(Math.random()*(max - min + 1)) +min;
-      let j=0;
-      while(j<6){
-        if(numbers[j] != num){
-          j++
+    const numbers = [];
+    for (let i = 0; i < 6; i++) {
+      let num = Math.floor(Math.random() * (max - min + 1)) + min;
+      let j = 0;
+      while (j < numbers.length) {
+        if (numbers[j] !== num) {
+          j++;
+        } else {
+          num = Math.floor(Math.random() * (max - min + 1)) + min;
+          j = 0; // Restart the loop to check the new num against all previous numbers
         }
       }
-      if(j === 6){
-        numbers.push(num)
-      }
+      numbers.push(num);
     }
-    console.log(numbers)
-    return numbers
+    console.log("first", numbers);
+    return numbers;
   }
 
-  const pointers = generateRandomNumber(0,25)
+  const generateRandomPointer = (min:number, max:number) => {
+    return Math.floor(Math.random()*(max - min + 1)) +min;
+  }
 
   return (
     <div className='hero'>
@@ -34,9 +35,7 @@ export default function Test2() {
             <p className='hero__subtitle'>
               The objective for this test is to identify how fast and accurate you are in checking things in your head.
             </p>
-        </div>
-        <div className='home__cars-wrapper'>
-          {pointers?.map((pointer) => (<LettersPanel pointer={pointer} />))}
+            <LettersPanel numbers={generateRandomNumber(0,25)} pointer={generateRandomPointer(0,4)}/>
         </div>
     </div>
   )
